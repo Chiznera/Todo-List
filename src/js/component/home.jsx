@@ -8,19 +8,20 @@ const Home = () => {
 
   const listTodo = [];
 
-  function handleChange() {
+  const handleChange = () => {
     // track input field's state
     {
       (e) => setTask(e.target.value);
     }
-  }
+  };
 
-  function handleAdd() {
+  const handleAdd = () => {
     // add item
-    const newList = listTodo.concat({ task, id: uuidv4() });
 
-    setTask(newList);
-  }
+    setTask(new listTodo.concat({ name: task, id: uuidv4() }));
+
+    console.log(listTodo);
+  };
 
   const taskGenerator = () => {
     if (listTodo.length == 0) {
