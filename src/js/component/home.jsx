@@ -1,24 +1,51 @@
-import React from "react";
-
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, { useState, useEffect } from "react";
+import Li from "./li.jsx";
+import { v4 as uuidv4 } from "uuid";
 
 //create your first component
 const Home = () => {
+  const [task, setTask] = React.useState("");
+
+  const listTodo = [];
+
+  function handleChange() {
+    // track input field's state
+    {
+      (e) => setTask(e.target.value);
+    }
+  }
+
+  function handleAdd() {
+    // add item
+    const newList = listTodo.concat({ task, id: uuidv4() });
+
+    setTask(newList);
+  }
+
+  const taskGenerator = () => {
+    if (listTodo.length == 0) {
+      return <Li>No tasks, add a task.</Li>;
+    } else {
+      return listTodo.map((item) => <Li key={item.id}>{item.name}</Li>);
+    }
+  };
+
   return (
-    <div>
-      <h1 className="text-center mt-5">Hello Rigo!</h1>
-      <p>
-        <img src={rigoImage} />
-      </p>
-      <a href="#" className="btn btn-success">
-        If you see this green button... bootstrap is working...
-      </a>
-      <p>
-        Made by <a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-        love!
-      </p>
-    </div>
+    <>
+      <div className="header">Todo</div>
+      <div className="todoList">
+        <input
+          type="text"
+          onChange={handleChange}
+          placeholder="What needs to be done?"
+          onKeyPress={(e) => {
+            e.key === "Enter" ? handleAdd() : null;
+          }}
+        />
+        <ul>{taskGenerator()}</ul>
+      </div>
+      <div className="footer">{}</div>
+    </>
   );
 };
 
