@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Li from "./li.jsx";
 import { v4 as uuidv4 } from "uuid";
+import CloseButton from "./closeButton.jsx";
 
 //create your first component
 const Home = () => {
-  const [task, setTask] = React.useState("");
+  const [task, setTask] = useState("");
 
-  const listTodo = [];
+  const [listTodo, setListTodo] = useState([]);
 
-  const handleChange = () => {
-    // track input field's state
-    {
-      (e) => setTask(e.target.value);
-    }
-  };
+  // const handleChange = () => {
+  //   // track input field's state
+  //   {
+  //     (e) => setTask(e.target.value);
+  //   }
+  // };
 
   const handleAdd = () => {
     // add item
 
-    setTask(new listTodo.concat({ name: task, id: uuidv4() }));
+    setListTodo(listTodo.concat({ name: task, id: uuidv4() }));
 
     console.log(listTodo);
   };
@@ -27,25 +28,43 @@ const Home = () => {
     if (listTodo.length == 0) {
       return <Li>No tasks, add a task.</Li>;
     } else {
-      return listTodo.map((item) => <Li key={item.id}>{item.name}</Li>);
+      return listTodo.map((item) => (
+        <Li key={item.id}>
+          {item.name}
+          <CloseButton />
+        </Li>
+      ));
+    }
+  };
+
+  const itemsLeft = () => {
+    if (listTodo.length == 1) {
+      return "Item Left";
+    } else {
+      return "Items Left";
     }
   };
 
   return (
     <>
-      <div className="header">Todo</div>
-      <div className="todoList">
+      <div className="header">
+        <div className="headerName">Todo</div>
         <input
           type="text"
-          onChange={handleChange}
+          onChange={(e) => setTask(e.target.value)}
           placeholder="What needs to be done?"
           onKeyPress={(e) => {
             e.key === "Enter" ? handleAdd() : null;
           }}
         />
+      </div>
+      <div className="todoList">
         <ul>{taskGenerator()}</ul>
       </div>
-      <div className="footer">{}</div>
+      <div className="footer">
+        {listTodo.length + " "}
+        {itemsLeft()}
+      </div>
     </>
   );
 };
