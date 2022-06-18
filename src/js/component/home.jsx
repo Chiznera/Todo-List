@@ -9,19 +9,16 @@ const Home = () => {
 
   const [listTodo, setListTodo] = useState([]);
 
-  // const handleChange = () => {
-  //   // track input field's state
-  //   {
-  //     (e) => setTask(e.target.value);
-  //   }
-  // };
-
   const handleAdd = () => {
     // add item
 
-    setListTodo(listTodo.concat({ name: task, id: uuidv4() }));
+    setListTodo(listTodo.concat({ label: task, id: uuidv4(), done: false }));
 
     console.log(listTodo);
+
+    // putListTodo();
+
+    getListTodo();
   };
 
   const taskGenerator = () => {
@@ -30,7 +27,8 @@ const Home = () => {
     } else {
       return listTodo.map((item) => (
         <Li key={item.id}>
-          {item.name}
+          {item.label}
+          {item.done}
           <CloseButton />
         </Li>
       ));
@@ -44,6 +42,40 @@ const Home = () => {
       return "Items Left";
     }
   };
+
+  const getListTodo = () => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/chiznera", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((respData) => {
+        setListTodo(respData);
+        console.log(respData);
+      });
+  };
+
+  // const putListTodo = () => {
+  //   fetch("https://assets.breatheco.de/apis/fake/todos/user/chiznera", {
+  //     method: "PUT",
+  //     body: { listTodo },
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   // .then((resp) => resp.json())
+  //   // .then((respData) => {
+  //   //   setListTodo(respData);
+  //   //   console.log(respData);
+  //   // });
+  // };
+
+  useEffect(() => {
+    //code goes here
+    getListTodo();
+  }, []);
 
   return (
     <>
