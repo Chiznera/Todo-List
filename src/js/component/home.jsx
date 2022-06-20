@@ -9,13 +9,6 @@ const Home = () => {
 
   const [listTodo, setListTodo] = useState([]);
 
-  // const handleChange = () => {
-  //   // track input field's state
-  //   {
-  //     (e) => setTask(e.target.value);
-  //   }
-  // };
-
   const handleAdd = () => {
     // add item
 
@@ -24,14 +17,17 @@ const Home = () => {
     console.log(listTodo);
   };
 
+  const deleteItem = (index) => () =>
+    setListTodo((listTodo) => listTodo.filter((_, i) => i !== index));
+
   const taskGenerator = () => {
     if (listTodo.length == 0) {
       return <Li>No tasks, add a task.</Li>;
     } else {
-      return listTodo.map((item) => (
+      return listTodo.map((item, index) => (
         <Li key={item.id}>
           {item.name}
-          <CloseButton />
+          <CloseButton func={deleteItem(index)} />
         </Li>
       ));
     }

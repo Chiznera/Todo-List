@@ -1,7 +1,11 @@
 import React from "react";
 
-const CloseButton = () => {
-  return <button className="close">X</button>;
+const CloseButton = (prop) => {
+  return (
+    <button className="close" onClick={prop.func}>
+      X
+    </button>
+  );
 };
 
 export default CloseButton;
