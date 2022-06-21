@@ -21,15 +21,18 @@ const Home = () => {
     getListTodo();
   };
 
+  const deleteItem = (index) => () =>
+    setListTodo((listTodo) => listTodo.filter((_, i) => i !== index));
+
   const taskGenerator = () => {
     if (listTodo.length == 0) {
       return <Li>No tasks, add a task.</Li>;
     } else {
-      return listTodo.map((item) => (
+      return listTodo.map((item, index) => (
         <Li key={item.id}>
           {item.label}
           {item.done}
-          <CloseButton />
+          <CloseButton func={deleteItem(index)} text="X" />
         </Li>
       ));
     }
@@ -57,25 +60,47 @@ const Home = () => {
       });
   };
 
-  // const putListTodo = () => {
-  //   fetch("https://assets.breatheco.de/apis/fake/todos/user/chiznera", {
-  //     method: "PUT",
-  //     body: { listTodo },
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   // .then((resp) => resp.json())
-  //   // .then((respData) => {
-  //   //   setListTodo(respData);
-  //   //   console.log(respData);
-  //   // });
-  // };
+  const putListTodo = () => {
+    let requestBody = [];
+
+    if (listTodo.length == 0) {
+      requestBody = [
+        {
+          label: "No tasks, add a task.",
+          done: false,
+        },
+      ];
+    } else {
+      requestBody = listTodo;
+    }
+
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/chiznera", {
+      method: "PUT",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).catch((e) => console.log(e));
+    // .then((resp) => resp.json())
+    // .then((respData) => {
+    //   setListTodo(respData);
+    //   console.log(respData);
+    // });
+  };
 
   useEffect(() => {
     //code goes here
     getListTodo();
   }, []);
+
+  useEffect(() => {
+    //code goes here
+    putListTodo();
+  }, [listTodo]);
+
+  const deleteAll = () => {
+    setListTodo([]);
+  };
 
   return (
     <>
@@ -89,7 +114,15 @@ const Home = () => {
             e.key === "Enter" ? handleAdd() : null;
           }}
         />
+        <div>
+          <CloseButton
+            specialClass="otherClose"
+            func={deleteAll}
+            text="Clear All"
+          />
+        </div>
       </div>
+
       <div className="todoList">
         <ul>{taskGenerator()}</ul>
       </div>

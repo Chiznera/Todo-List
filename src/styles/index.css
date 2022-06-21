@@ -16,7 +16,7 @@
 }
 
 body {
-  width: 20%;
+  width: 30%;
   margin: auto;
 }
 
@@ -88,6 +88,11 @@ ul li.checked::before {
   background-color: #f44336;
   color: white;
   opacity: 1;
+}
+
+.otherClose {
+  opacity: 1;
+  position: initial;
 }
 
 /* Style the header */
