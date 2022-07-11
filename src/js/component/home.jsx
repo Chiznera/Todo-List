@@ -18,7 +18,7 @@ const Home = () => {
 
     // putListTodo();
 
-    getListTodo();
+    // getListTodo();
   };
 
   const deleteItem = (index) => () =>
